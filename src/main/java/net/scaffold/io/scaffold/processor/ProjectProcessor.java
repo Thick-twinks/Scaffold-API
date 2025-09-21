@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProjectProcessor {
-    private final ProjectDao projectDao;
+
 }

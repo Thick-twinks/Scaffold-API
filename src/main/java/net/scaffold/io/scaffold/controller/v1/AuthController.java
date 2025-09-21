@@ -2,12 +2,13 @@ package net.scaffold.io.scaffold.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
+import net.scaffold.io.scaffold.dto.request.RefreshRequestDto;
 import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
 import net.scaffold.io.scaffold.processor.AuthProcessor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,4 +20,10 @@ public class AuthController {
     public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
         return authProcessor.login(dto);
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDto> refresh(@RequestBody RefreshRequestDto request) {
+        return ResponseEntity.ok(authProcessor.refresh(request.refreshToken()));
+    }
+
 }
