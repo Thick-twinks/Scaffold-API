@@ -22,10 +22,12 @@ public class JwtService {
     private final StringRedisTemplate redisTemplate;
     private final Duration refreshTokenTtl;
 
-    public JwtService(@Value("${jwt.secret:}") String secret,
-                      @Value("${jwt.expiration-ms:3600000}") long jwtExpirationMs,
-                      StringRedisTemplate redisTemplate,
-                      @Value("${jwt.refresh-token-duration-ms:2592000000}") long refreshTokenDurationMs) {
+    public JwtService(
+            @Value("${jwt.secret:}") String secret,
+            @Value("${jwt.expiration-ms:3600000}") long jwtExpirationMs,
+            StringRedisTemplate redisTemplate,
+            @Value("${jwt.refresh-token-duration-ms:2592000000}") long refreshTokenDurationMs
+    ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.jwtExpirationMs = jwtExpirationMs;
         this.redisTemplate = redisTemplate;
