@@ -23,6 +23,7 @@ public class AuthProcessor {
     private final MemberAuthenticationProvider memberAuthenticationProvider;
 
     public LoginResponseDto login(LoginRequestDto dto) {
+        log.info("Process login: dto {}", dto);
         memberValidator.prevalidateLogin(dto);
         var member = memberService.findMemberByEmail(dto.email());
         memberValidator.validateLogin(member);
