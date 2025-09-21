@@ -34,18 +34,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         String token = null;
-        String username = null;
+        String email = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             try {
-                username = jwtService.extractEmail(token);
+                email = jwtService.extractEmail(token);
             } catch (Exception ignored) {
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var member = memberService.findMemberByEmail(username);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var member = memberService.findMemberByEmail(email);
             if (member != null && jwtService.validateToken(token, member.getEmail())) {
                 var memberPrincipal = new MemberPrincipal(
                         member.getId(),
