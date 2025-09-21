@@ -8,7 +8,7 @@ import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
 import net.scaffold.io.scaffold.mapper.MemberMapper;
 import net.scaffold.io.scaffold.service.JwtService;
 import net.scaffold.io.scaffold.service.MemberService;
-import net.scaffold.io.scaffold.validator.MemberValidator;
+import net.scaffold.io.scaffold.validator.AuthValidator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +17,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthProcessor {
     private final MemberService memberService;
-    private final MemberValidator memberValidator;
+    private final AuthValidator authValidator;
     private final MemberMapper memberMapper;
     private final JwtService jwtService;
     private final MemberAuthenticationProvider memberAuthenticationProvider;
 
     public LoginResponseDto login(LoginRequestDto dto) {
         log.info("Process login: dto {}", dto);
-        memberValidator.prevalidateLogin(dto);
+        authValidator.prevalidateLogin(dto);
         var member = memberService.findMemberByEmail(dto.email());
-        memberValidator.validateLogin(member);
+        authValidator.validateLogin(member);
         memberAuthenticationProvider.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         dto.email(),
