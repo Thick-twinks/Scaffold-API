@@ -1,7 +1,6 @@
 package net.scaffold.io.scaffold.config.security;
 
 import lombok.RequiredArgsConstructor;
-import net.scaffold.io.scaffold.config.LogFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,8 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             MemberAuthenticationProvider memberAuthenticationProvider,
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            LogFilter logFilter
+            JwtAuthenticationFilter jwtAuthenticationFilter
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -45,7 +43,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilter(logFilter)
                 .authenticationProvider(memberAuthenticationProvider)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

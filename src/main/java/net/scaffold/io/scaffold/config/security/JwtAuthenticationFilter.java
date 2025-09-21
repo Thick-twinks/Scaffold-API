@@ -9,6 +9,7 @@ import net.scaffold.io.scaffold.dto.internal.MemberPrincipal;
 import net.scaffold.io.scaffold.service.JwtService;
 import net.scaffold.io.scaffold.service.MemberService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final MemberService memberService;
+    private final MemberAuthenticationProvider memberAuthenticationProvider;
 
     @Override
     protected void doFilterInternal(
@@ -53,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         memberPrincipal,
                         null,
-                        Collections.singleton(member.getRole())
+                        Collections.singleton(new SimpleGrantedAuthority(member.getRole().getAuthority()))
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

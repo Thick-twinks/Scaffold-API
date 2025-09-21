@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/2025/09/20/add_member.sql
+  - include:
+      file: db/changelog/2025/09/21/add_init_member_data.sql
