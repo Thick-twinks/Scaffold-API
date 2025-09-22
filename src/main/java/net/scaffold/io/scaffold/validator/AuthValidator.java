@@ -16,4 +16,8 @@ public class AuthValidator extends AbstractValidator {
     public void validateLogin(Member member) {
         notNull(member, "MEMBER_NOT_FOUND");
     }
+
+    public void validateId(String id) {
+        notNull(id, "INVALID_REFRESH_TOKEN");
+    }
 }
