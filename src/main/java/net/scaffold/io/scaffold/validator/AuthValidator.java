@@ -5,7 +5,7 @@ import net.scaffold.io.scaffold.entity.Member;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MemberValidator extends AbstractValidator{
+public class AuthValidator extends AbstractValidator {
     public void prevalidateLogin(LoginRequestDto dto) {
         allNotNull("MISSING_PARAMS",
                 dto.email(),
