@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scaffold.io.scaffold.config.security.MemberAuthenticationProvider;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
+import net.scaffold.io.scaffold.dto.request.RefreshRequestDto;
 import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
 import net.scaffold.io.scaffold.mapper.MemberMapper;
 import net.scaffold.io.scaffold.service.JwtService;
 import net.scaffold.io.scaffold.service.MemberService;
 import net.scaffold.io.scaffold.validator.AuthValidator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -41,10 +41,11 @@ public class AuthProcessor {
         return memberMapper.toLoginResponseDto(accessToken, refreshToken);
     }
 
-    public LoginResponseDto refresh(String refreshToken) {
-        log.info("Process refresh: refreshToken {}", refreshToken);
-        UUID memberId = UUID.fromString(jwtService.validateRefreshToken(refreshToken));
-        authValidator.validateId(memberId);
+    public LoginResponseDto refresh(RefreshRequestDto dto) {
+        log.info("Process refresh: refreshToken {}", dto);
+        String refreshToken = jwtService.validateRefreshToken(dto.refreshToken());
+        authValidator.validateId(refreshToken);
+        UUID memberId = UUID.fromString(refreshToken);
         var member = memberService.findMemberById(memberId);
         authValidator.validateLogin(member);
         jwtService.revokeToken(refreshToken);
@@ -52,7 +53,5 @@ public class AuthProcessor {
         String newRefreshToken = jwtService.generateRefreshToken(member.getId());
         return memberMapper.toLoginResponseDto(newAccessToken, newRefreshToken);
     }
-
-
 
 }

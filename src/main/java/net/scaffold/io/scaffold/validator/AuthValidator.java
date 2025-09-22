@@ -4,8 +4,6 @@ import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
 import net.scaffold.io.scaffold.entity.Member;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class AuthValidator extends AbstractValidator {
     public void prevalidateLogin(LoginRequestDto dto) {
@@ -19,5 +17,7 @@ public class AuthValidator extends AbstractValidator {
         notNull(member, "MEMBER_NOT_FOUND");
     }
 
-    public void validateId(UUID id) {notNull(id, "ID_NOT_FOUND");}
+    public void validateId(String id) {
+        notNull(id, "INVALID_REFRESH_TOKEN");
+    }
 }

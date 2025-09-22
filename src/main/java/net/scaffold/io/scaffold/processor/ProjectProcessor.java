@@ -2,7 +2,6 @@ package net.scaffold.io.scaffold.processor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.scaffold.io.scaffold.dao.ProjectDao;
 import org.springframework.stereotype.Service;
 
 @Slf4j
