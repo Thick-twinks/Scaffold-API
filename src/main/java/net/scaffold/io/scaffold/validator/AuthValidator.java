@@ -1,6 +1,8 @@
 package net.scaffold.io.scaffold.validator;
 
+import jakarta.validation.ValidationException;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
+import net.scaffold.io.scaffold.dto.request.RegisterRequestDto;
 import net.scaffold.io.scaffold.entity.Member;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +17,18 @@ public class AuthValidator extends AbstractValidator {
 
     public void validateLogin(Member member) {
         notNull(member, "MEMBER_NOT_FOUND");
+    }
+
+    public void prevalidateRegister(RegisterRequestDto dto) {
+        allNotNull("MISSING_PARAMS",
+                dto.email(),
+                dto.password(),
+                dto.fullName(),
+                dto.role()
+        );
+
+        if (dto.role() == null) {
+            throw new ValidationException("ROLE_REQUIRED");
+        }
     }
 }

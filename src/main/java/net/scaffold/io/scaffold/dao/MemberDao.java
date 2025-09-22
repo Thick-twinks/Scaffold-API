@@ -18,4 +18,12 @@ public interface MemberDao extends JpaRepository<Member, UUID> {
                     """
     )
     Member findMemberByEmail(String email);
+
+    @Query(
+            nativeQuery = true,
+            value = """
+                        INSERT INTO member (full_name, email, password, role) VALUES (:fullName, :email, :password, :role)
+                    """
+    )
+    Member saveMember(Member member);
 }

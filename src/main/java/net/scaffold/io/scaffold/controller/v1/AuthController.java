@@ -2,6 +2,7 @@ package net.scaffold.io.scaffold.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
+import net.scaffold.io.scaffold.dto.request.RegisterRequestDto;
 import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
 import net.scaffold.io.scaffold.processor.AuthProcessor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,5 +19,10 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
         return authProcessor.login(dto);
+    }
+
+    @PostMapping("/register")
+    public LoginResponseDto register(@RequestBody RegisterRequestDto dto) {
+        return authProcessor.register(dto);
     }
 }
