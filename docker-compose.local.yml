@@ -23,6 +23,19 @@ services:
       - scaffold_network
     command: redis-server --appendonly yes
 
+  s3:
+    image: adobe/s3mock:3.8.0
+    ports:
+      - "9090:9090"
+      - "9191:9191"
+    environment:
+      initialBuckets: "initial-bucket"
+      root: "/data"
+      retainFilesOnExit: "true"
+    volumes:
+      - s3_data:/data
+    networks:
+      - scaffold_network
 
 volumes:
   postgres_data:
