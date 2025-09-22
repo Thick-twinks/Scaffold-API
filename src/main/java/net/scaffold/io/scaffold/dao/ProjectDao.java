@@ -1,5 +1,7 @@
 package net.scaffold.io.scaffold.dao;
 
+import org.springframework.stereotype.Repository;
 
-public interface ProjectDao{
+@Repository
+public interface ProjectDao {
 }
