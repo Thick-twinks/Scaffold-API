@@ -5,7 +5,6 @@ import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
 import net.scaffold.io.scaffold.dto.request.RefreshRequestDto;
 import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
 import net.scaffold.io.scaffold.processor.AuthProcessor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
