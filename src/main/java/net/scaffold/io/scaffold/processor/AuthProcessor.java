@@ -43,12 +43,12 @@ public class AuthProcessor {
 
     public LoginResponseDto refresh(RefreshRequestDto dto) {
         log.info("Process refresh: refreshToken {}", dto);
-        String refreshToken = jwtService.validateRefreshToken(dto.refreshToken());
-        authValidator.validateId(refreshToken);
-        UUID memberId = UUID.fromString(refreshToken);
+        String memberProfileUid = jwtService.validateRefreshToken(dto.refreshToken());
+        authValidator.validateId(memberProfileUid);
+        UUID memberId = UUID.fromString(memberProfileUid);
         var member = memberService.findMemberById(memberId);
         authValidator.validateLogin(member);
-        jwtService.revokeToken(refreshToken);
+        jwtService.revokeToken(memberProfileUid);
         String newAccessToken = jwtService.generateToken(member.getEmail(), member.getId());
         String newRefreshToken = jwtService.generateRefreshToken(member.getId());
         return memberMapper.toLoginResponseDto(newAccessToken, newRefreshToken);
