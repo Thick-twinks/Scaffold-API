@@ -77,7 +77,6 @@ volumes:
   postgres_data:
   redis_data:
   s3_data:
-  .m2:
 
 networks:
   scaffold_network:
