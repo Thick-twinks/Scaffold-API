@@ -15,7 +15,7 @@ public class MemberService {
         return memberDao.findMemberByEmail(email);
     }
 
-    public Member createMember(Member member) {
-        return memberDao.save(member);
+    public void save(Member member) {
+        memberDao.save(member);
     }
 }

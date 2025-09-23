@@ -25,5 +25,6 @@ public class AuthValidator extends AbstractValidator {
                 dto.fullName(),
                 dto.role()
         );
+        //TODO: добавить проверки на регекс
     }
 }

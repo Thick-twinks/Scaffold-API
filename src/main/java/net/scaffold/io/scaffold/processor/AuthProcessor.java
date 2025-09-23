@@ -5,14 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.scaffold.io.scaffold.config.security.MemberAuthenticationProvider;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
 import net.scaffold.io.scaffold.dto.request.RegisterRequestDto;
-import net.scaffold.io.scaffold.dto.response.LoginResponseDto;
+import net.scaffold.io.scaffold.dto.response.AuthResponseDto;
 import net.scaffold.io.scaffold.entity.Member;
 import net.scaffold.io.scaffold.mapper.MemberMapper;
 import net.scaffold.io.scaffold.service.JwtService;
 import net.scaffold.io.scaffold.service.MemberService;
 import net.scaffold.io.scaffold.validator.AuthValidator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -24,9 +23,8 @@ public class AuthProcessor {
     private final MemberMapper memberMapper;
     private final JwtService jwtService;
     private final MemberAuthenticationProvider memberAuthenticationProvider;
-    private final PasswordEncoder passwordEncoder;
 
-    public LoginResponseDto login(LoginRequestDto dto) {
+    public AuthResponseDto login(LoginRequestDto dto) {
         log.info("Process login: dto {}", dto);
         authValidator.prevalidateLogin(dto);
         var member = memberService.findMemberByEmail(dto.email());
@@ -39,22 +37,19 @@ public class AuthProcessor {
         );
         String accessToken = jwtService.generateToken(member.getEmail(), member.getId());
         String refreshToken = jwtService.generateRefreshToken(member.getId());
-        return memberMapper.toLoginResponseDto(accessToken, refreshToken);
+        return memberMapper.toAuthResponseDto(accessToken, refreshToken);
     }
 
-    public LoginResponseDto register(RegisterRequestDto dto) {
+    public AuthResponseDto register(RegisterRequestDto dto) {
         log.info("Process registration: dto {}", dto);
-
         authValidator.prevalidateRegister(dto);
 
-        Member newMember = memberMapper.toMember(dto);
-        newMember.setPassword(passwordEncoder.encode(dto.password()));
+        Member member = memberMapper.toMember(dto);
+        memberService.save(member);
 
-        Member savedMember = memberService.createMember(newMember);
+        String accessToken = jwtService.generateToken(member.getEmail(), member.getId());
+        String refreshToken = jwtService.generateRefreshToken(member.getId());
 
-        String accessToken = jwtService.generateToken(savedMember.getEmail(), savedMember.getId());
-        String refreshToken = jwtService.generateRefreshToken(savedMember.getId());
-
-        return memberMapper.toLoginResponseDto(accessToken, refreshToken);
+        return memberMapper.toAuthResponseDto(accessToken, refreshToken);
     }
 }
