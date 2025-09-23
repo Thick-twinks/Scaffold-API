@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthValidator extends AbstractValidator {
-    public void prevalidateLogin(LoginRequestDto dto) {
+    public void prevalidateAuth(LoginRequestDto dto) {
         allNotNull("MISSING_PARAMS",
                 dto.email(),
                 dto.password()
         );
     }
 
-    public void validateLogin(Member member) {
+    public void validateAuth(Member member) {
         notNull(member, "MEMBER_NOT_FOUND");
     }
 

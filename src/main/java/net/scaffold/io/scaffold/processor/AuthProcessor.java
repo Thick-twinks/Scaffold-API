@@ -29,9 +29,9 @@ public class AuthProcessor {
 
     public AuthResponseDto login(LoginRequestDto dto) {
         log.info("Process login: dto {}", dto);
-        authValidator.prevalidateLogin(dto);
+        authValidator.prevalidateAuth(dto);
         var member = memberService.findMemberByEmail(dto.email());
-        authValidator.validateLogin(member);
+        authValidator.validateAuth(member);
         memberAuthenticationProvider.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         dto.email(),
@@ -59,14 +59,17 @@ public class AuthProcessor {
     public AuthResponseDto refresh(RefreshRequestDto dto) {
         log.info("Process refresh: refreshToken {}", dto);
         String memberProfileUid = jwtService.validateRefreshToken(dto.refreshToken());
-        authValidator.validateId(memberProfileUid);
+        authValidator.validateRefresh(memberProfileUid);
+
         UUID memberId = UUID.fromString(memberProfileUid);
         var member = memberService.findMemberById(memberId);
-        authValidator.validateLogin(member);
+
+        authValidator.validateAuth(member);
         jwtService.revokeToken(memberProfileUid);
+
         String newAccessToken = jwtService.generateToken(member.getEmail(), member.getId());
         String newRefreshToken = jwtService.generateRefreshToken(member.getId());
-        return memberMapper.toLoginResponseDto(newAccessToken, newRefreshToken);
+        return memberMapper.toAuthResponseDto(newAccessToken, newRefreshToken);
     }
 
 }
