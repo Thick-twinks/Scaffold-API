@@ -2,6 +2,7 @@ package net.scaffold.io.scaffold.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
+import net.scaffold.io.scaffold.dto.request.RefreshRequestDto;
 import net.scaffold.io.scaffold.dto.request.RegisterRequestDto;
 import net.scaffold.io.scaffold.dto.response.AuthResponseDto;
 import net.scaffold.io.scaffold.processor.AuthProcessor;
@@ -24,5 +25,10 @@ public class AuthController {
     @PostMapping("/register")
     public AuthResponseDto register(@RequestBody RegisterRequestDto dto) {
         return authProcessor.register(dto);
+    }
+
+    @PostMapping("/refresh")
+    public AuthResponseDto refresh(@RequestBody RefreshRequestDto request) {
+        return authProcessor.refresh(request);
     }
 }

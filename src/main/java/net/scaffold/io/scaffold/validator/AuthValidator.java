@@ -27,4 +27,8 @@ public class AuthValidator extends AbstractValidator {
         );
         //TODO: добавить проверки на регекс
     }
+
+    public void validateRefresh(String id) {
+        notNull(id, "INVALID_REFRESH_TOKEN");
+    }
 }

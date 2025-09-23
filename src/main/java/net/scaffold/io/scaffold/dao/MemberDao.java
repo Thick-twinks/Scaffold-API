@@ -19,4 +19,5 @@ public interface MemberDao extends JpaRepository<Member, UUID> {
     )
     Member findMemberByEmail(String email);
 
+    Member findMemberById(UUID id);
 }

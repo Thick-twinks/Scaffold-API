@@ -5,6 +5,7 @@ import net.scaffold.io.scaffold.dao.MemberDao;
 import net.scaffold.io.scaffold.entity.Member;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,5 +18,9 @@ public class MemberService {
 
     public void save(Member member) {
         memberDao.save(member);
+    }
+
+    public Member findMemberById(UUID id) {
+        return memberDao.findMemberById(id);
     }
 }
