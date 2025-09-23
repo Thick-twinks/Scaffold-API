@@ -1,6 +1,5 @@
 package net.scaffold.io.scaffold.validator;
 
-import jakarta.validation.ValidationException;
 import net.scaffold.io.scaffold.dto.request.LoginRequestDto;
 import net.scaffold.io.scaffold.dto.request.RegisterRequestDto;
 import net.scaffold.io.scaffold.entity.Member;
@@ -26,9 +25,5 @@ public class AuthValidator extends AbstractValidator {
                 dto.fullName(),
                 dto.role()
         );
-
-        if (dto.role() == null) {
-            throw new ValidationException("ROLE_REQUIRED");
-        }
     }
 }

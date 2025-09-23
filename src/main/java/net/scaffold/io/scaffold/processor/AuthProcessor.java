@@ -47,20 +47,11 @@ public class AuthProcessor {
 
         authValidator.prevalidateRegister(dto);
 
-        if (memberService.findMemberByEmail(dto.email()) != null) {
-            throw new RuntimeException("USER_ALREADY_EXISTS");
-        }
-
-        // Создание сущности
-        Member newMember = new Member();
-        newMember.setEmail(dto.email());
+        Member newMember = memberMapper.toMember(dto);
         newMember.setPassword(passwordEncoder.encode(dto.password()));
-        newMember.setFullName(dto.fullName());
-        newMember.setRole(dto.role());
 
         Member savedMember = memberService.createMember(newMember);
 
-        // Генерация токенов
         String accessToken = jwtService.generateToken(savedMember.getEmail(), savedMember.getId());
         String refreshToken = jwtService.generateRefreshToken(savedMember.getId());
 
