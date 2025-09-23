@@ -16,5 +16,11 @@ public class MemberService {
         return memberDao.findMemberByEmail(email);
     }
 
-    public Member findMemberById(UUID id) {return memberDao.findMemberById(id);}
+    public void save(Member member) {
+        memberDao.save(member);
+    }
+
+    public Member findMemberById(UUID id) {
+        return memberDao.findMemberById(id);
+    }
 }
