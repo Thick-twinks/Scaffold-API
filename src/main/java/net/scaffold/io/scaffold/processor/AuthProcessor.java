@@ -57,7 +57,7 @@ public class AuthProcessor {
     }
 
     public AuthResponseDto refresh(RefreshRequestDto dto) {
-        log.info("Process refresh: refreshToken {}", dto);
+        log.info("Process refresh: dto {}", dto);
         String memberProfileUid = jwtService.validateRefreshToken(dto.refreshToken());
         authValidator.validateRefresh(memberProfileUid);
 
