@@ -1,7 +1,7 @@
-version: '3.8'
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: scaffold_db
     environment:
       - 'POSTGRES_DB=scaffold'
       - 'POSTGRES_PASSWORD=scaffoldpass'
@@ -12,9 +12,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - scaffold_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scaffolduser -d scaffold"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: 'redis:latest'
+    container_name: scaffold_redis
     ports:
       - '6379:6379'
     volumes:
@@ -22,6 +28,26 @@ services:
     networks:
       - scaffold_network
     command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  s3:
+    image: adobe/s3mock:3.8.0
+    container_name: scaffold_s3
+    ports:
+      - "9090:9090"
+      - "9191:9191"
+    environment:
+      initialBuckets: "initial-bucket"
+      root: "/data"
+      retainFilesOnExit: "true"
+    volumes:
+      - s3_data:/data
+    networks:
+      - scaffold_network
 
   app:
     build: .
@@ -30,6 +56,7 @@ services:
       - "8080:8080"
     networks:
       - scaffold_network
+    # Возможно стоит добавить кеширование зависимостей для ускорения сборки
     depends_on:
       - postgres
       - redis
@@ -49,6 +76,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  s3_data:
 
 networks:
   scaffold_network:
