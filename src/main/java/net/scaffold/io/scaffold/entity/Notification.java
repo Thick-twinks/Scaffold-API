@@ -11,25 +11,15 @@ import java.util.UUID;
 @Data
 @Entity
 @RequiredArgsConstructor
-@Table(name = "notifications")
 public class Notification {
     @Id
-    private UUID id = UUID.randomUUID();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @Column(name = "entity_data", nullable = false, columnDefinition = "jsonb")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+    private UUID memberId;
     private String entityData;
-
-    @Column(name = "need_to_show")
     private Boolean needToShow = true;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @Column(name = "read_at")
     private LocalDateTime readAt;
 
 }

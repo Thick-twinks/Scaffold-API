@@ -11,32 +11,16 @@ import java.util.UUID;
 @Data
 @Entity
 @RequiredArgsConstructor
-@Table(name = "messages")
 public class Message {
     @Id
-    private UUID id = UUID.randomUUID();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_member_id", nullable = false)
-    private Member fromMember;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_member_id")
-    private Member toMember;
-
-    @Column(name = "object_uuid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+    private UUID fromMemberId;
+    private UUID toMemberId;
     private UUID objectUuid;
-
-    @Column(nullable = false)
     private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
-
-    @Column(name = "is_notification")
+    private UUID documentId;
     private Boolean isNotification = false;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 

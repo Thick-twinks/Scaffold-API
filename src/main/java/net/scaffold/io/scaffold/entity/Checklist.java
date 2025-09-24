@@ -12,20 +12,14 @@ import java.util.UUID;
 @Data
 @Entity
 @RequiredArgsConstructor
-@Table(name = "checklists")
 public class Checklist {
     @Id
-    private UUID id = UUID.randomUUID();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+    private UUID projectId;
     @Enumerated(EnumType.STRING)
     private ChecklistType type;
-
     private String document;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 }

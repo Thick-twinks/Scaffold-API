@@ -1,6 +1,6 @@
 CREATE TABLE geopoints (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    x VARCHAR(100) NOT NULL,
-    y VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                           x VARCHAR(100) NOT NULL,
+                           y VARCHAR(100) NOT NULL,
+                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

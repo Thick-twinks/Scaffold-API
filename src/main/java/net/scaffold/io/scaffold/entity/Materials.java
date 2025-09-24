@@ -3,6 +3,7 @@ package net.scaffold.io.scaffold.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import net.scaffold.io.scaffold.entity.constant.MaterialsStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -11,22 +12,14 @@ import java.util.UUID;
 @Data
 @Entity
 @RequiredArgsConstructor
-@Table(name = "materials")
 public class Materials {
     @Id
-    private UUID id = UUID.randomUUID();
-
-    private Integer quantity;
-
-    private String status;
-
-    @Column(name = "document_link")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
+    @Enumerated(EnumType.STRING)
+    private MaterialsStatus status;
     private String documentLink;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
-
+    private UUID projectId;
     @CreationTimestamp
     private LocalDateTime createdAt;
 
