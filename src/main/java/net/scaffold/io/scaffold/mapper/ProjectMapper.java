@@ -12,8 +12,6 @@ import java.util.List;
 )
 public abstract class ProjectMapper {
 
-    public abstract ProjectResponseDto toDto(Project project);
-
     public abstract List<ProjectResponseDto> toDtoList(List<Project> members);
 
 }
